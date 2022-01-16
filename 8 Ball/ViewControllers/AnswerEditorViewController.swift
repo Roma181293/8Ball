@@ -194,7 +194,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
                     AnswerManager.editAnswer(answer, answerString: answerTextField.text!, type: type, context: context)
                 }
                 else {
-                    AnswerManager.createAnswer(answerTextField.text!, type: type, createdByUser: true, context: context)
+                   try  AnswerManager.createAnswer(answerTextField.text!, type: type, createdByUser: true, context: context)
                 }
                 try CoreDataManager.shared.saveContext(context)
                 delegate.refreshData()

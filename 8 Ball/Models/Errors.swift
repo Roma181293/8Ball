@@ -52,12 +52,14 @@ extension PredictionServiceError: LocalizedError {
 enum AnswerError : Error {
     case answerUsedInPrediction
     case emptyAnswer
+    case answerAlreadyExists
 }
 extension AnswerError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .answerUsedInPrediction : return NSLocalizedString("Answer used in prediction", comment: "")
         case .emptyAnswer : return NSLocalizedString("Please enter answer", comment: "")
+        case .answerAlreadyExists: return NSLocalizedString("This answer already exists", comment: "")
         }
     }
 }

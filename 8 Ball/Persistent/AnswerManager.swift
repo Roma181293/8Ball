@@ -16,7 +16,7 @@ class AnswerManager {
     static func getOrCreateAnswer(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) -> Answer {
         let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdByUser", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "title = %@ && type = %i", argumentArray: [answerString, type.rawValue as CVarArg])
+        fetchRequest.predicate = NSPredicate(format: "title = %@ && type = %i && createdByUser = %@", argumentArray: [answerString, type.rawValue as CVarArg, createdByUser])
         
         if let answers = try? context.fetch(fetchRequest), answers.isEmpty == false {
             return answers.last!
@@ -29,8 +29,22 @@ class AnswerManager {
             return answer
         }
     }
+    private static func isAnswerExist(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) -> Bool {
+        
+        let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdByUser", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "title = %@ && createdByUser = %@", argumentArray: [answerString, createdByUser])
+        
+        if let answers = try? context.fetch(fetchRequest), answers.isEmpty == false {
+            return false
+        }
+        return true
+    }
     
-    static func createAnswer(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) {
+    static func createAnswer(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) throws {
+        guard isAnswerExist(answerString, type: type, createdByUser: createdByUser, context: context) else {
+            throw AnswerError.answerAlreadyExists
+        }
         getOrCreateAnswer(answerString, type: type, createdByUser: createdByUser, context: context)
     }
     
