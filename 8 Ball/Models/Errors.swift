@@ -7,26 +7,14 @@
 
 import Foundation
 
-enum ResponseError: Error {
-    case noData
-}
-
-extension ResponseError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .noData : return NSLocalizedString("There is no data in service response", comment: "")
-        }
-    }
-}
-
 enum URLError: Error {
-    case badURL(url: String)
+    case invalidURL(url: String)
 }
 
 extension URLError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case let .badURL(url) : return String(format: NSLocalizedString("Bad URL %@.", comment: ""),url)
+        case let .invalidURL(url) : return String(format: NSLocalizedString("Invalid URL %@.", comment: ""),url)
         }
     }
 }

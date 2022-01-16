@@ -8,7 +8,7 @@
 
 "Warning" = "Увага";
 "There is no data in service response" = "В відповіді сервіса немає даних";
-"Bad URL %@." = "Погане посилання %@.";
+"Invalid URL %@." = "Не коректне посилання %@.";
 "I'm thinkig about your question. Please wait" = "Я думаю над твоїм питанням. Будь ласка почекайте";
 "Please enter question" = "Будь ласка введіть питання";
 "There is no question. Please add your question" = "Питання не виявлено. Будь ласка додайте його";

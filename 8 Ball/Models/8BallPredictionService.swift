@@ -6,33 +6,29 @@
 //
 
 import Foundation
+import Alamofire
 
 class EightBallPredictionService {
     
     static func getPredictionForQuestion(_ question : String? = nil, completion: @escaping ((MagicData?, Error?) -> Void)) {
         
-        let quest = question?.replacingOccurrences(of: " ", with: "%20")
+        let apiHost = "https://8ball.delegator.com/"
+        let apiPath = "magic/JSON/" + (question ?? "Question")
         
-        let stringURL = "https://8ball.delegator.com/magic/JSON/" + (quest ?? "Question")
-        guard let url = URL(string: stringURL) else {completion(nil, URLError.badURL(url: stringURL)); return}
+        guard let escapedPath = apiPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlHostAllowed),
+              let url = URL(string: "\(apiHost)\(escapedPath)")  else {
+                  completion(nil, URLError.invalidURL(url: "\(apiHost)\(apiPath)"))
+                  return
+              }
         
-        NetworkService.getData(url: url, method: "GET", completion: { (data, error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print(#function, error.localizedDescription)
-                    completion(nil, error)
-                }
-                
-                guard let data = data else {return}
-                
-                do {
-                    let data = try JSONDecoder().decode(MagicData.self, from: data)
-                    completion(data, nil)
-                } catch let decodingError {
-                    print(#function, decodingError.localizedDescription)
-                    completion(nil, decodingError)
-                }
+        AF.request(url).responseDecodable(of: MagicData.self) {(response) in
+            if let error = response.error{
+                print("ERROR: ", error.localizedDescription)
+                completion(nil, error)
             }
-        })
+            if let magicData = response.value {
+                completion(magicData, nil)
+            }
+        }
     }
 }
