@@ -11,9 +11,9 @@ class EightBallPredictionService {
     
     static func getPredictionForQuestion(_ question : String? = nil, completion: @escaping ((MagicData?, Error?) -> Void)) {
         
-        let quest = question?.replacingOccurrences(of: " ", with: "%20")
+//        let quest = question?.replacingOccurrences(of: " ", with: "%20")
         
-        let stringURL = "https://8ball.delegator.com/magic/JSON/" + (quest ?? "Question")
+        let stringURL = "https://8ball.delegator.com/magic/JSON/" + ((question ?? "Question").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
         guard let url = URL(string: stringURL) else {completion(nil, URLError.invalidURL(url: stringURL)); return}
         
         NetworkService.getData(url: url, method: "GET", completion: { (data, error) in
