@@ -1,0 +1,32 @@
+/* 
+  Localization.strings
+  8 Ball
+
+  Created by Roman Topchii on 16.01.2022.
+  
+*/
+
+"Warning" = "";
+"There is no data in service response" = "";
+"Bad URL %@." = "";
+"I'm thinkig about your question. Please wait" = "";
+"Please enter question" = "";
+"There is no question. Please add your question" = "";
+"Custom answer not found. Please add them" = "";
+"Answer used in prediction" = "";
+"Please enter answer" = "";
+"Ask me whatever you want to know" = "";
+"Prediction" = "";
+"Oops" = "";
+"Do you need this prediction?" = "";
+"New question" = "";
+"Please ask me whatever you want" = "";
+"40 characters max length" = "";
+"Add" = "";
+"Cancel" = "";
+"Settings" = "";
+"Answers" = "";
+"Answer type" = "";
+"Your answer" = "";
+"Save" = "";
+"Predictions history" = "";

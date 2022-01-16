@@ -1,0 +1,37 @@
+/* 
+  Localizable.strings
+  8 Ball
+
+  Created by Roman Topchii on 16.01.2022.
+  
+*/
+
+"Warning" = "Увага";
+"There is no data in service response" = "В відповіді сервіса немає даних";
+"Bad URL %@." = "Погане посилання %@.";
+"I'm thinkig about your question. Please wait" = "Я думаю над твоїм питанням. Будь ласка почекайте";
+"Please enter question" = "Будь ласка введіть питання";
+"There is no question. Please add your question" = "Питання не виявлено. Будь ласка додайте його";
+"Custom answer not found. Please add them" = "Відповіді користувача не знайдено. Будь ласка додайте їх";
+"Answer used in prediction" = "Відповідь використовується в передбаченні";
+"Please enter answer" = "Будь ласка введіть питання";
+"Ask me whatever you want to know" = "Запитуйте в мене все що вам цікаво знати";
+"Prediction" = "Передбачення";
+"Oops" = "Опаньки";
+"Do you need this prediction?" = "Вам потрібне це передбачення?";
+"New question" = "Нове питання";
+"Please ask me whatever you want" = "Запитуйте в мене все що вам хочеться";
+"40 characters max length" = " 40 ";
+"Add" = "Додати";
+"Cancel" = "Закрити";
+"Use custom answers" = "Користувацькі питання";
+"Answers" = "Відповіді";
+"Prediction history" = "Історія передбачень";
+"Settings" = "Налаштування";
+"Answers" = "Відповіді";
+"Answer type" = "Тип відповіді";
+"Your answer" = "Ваша відповідь";
+"Save" = "Зберегти";
+"Predictions history" = "Історія передбачень";
+"Yes" = "Так";
+"No" = "Ні";

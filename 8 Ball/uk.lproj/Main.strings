@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; configuration.title = "New question"; ObjectID = "Lzn-uj-1Y2"; */
+"Lzn-uj-1Y2.configuration.title" = "Нове питання";
+
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "b8z-z0-XnN"; */
+"b8z-z0-XnN.title" = "Налаштування";
+
+/* Class = "UITabBarItem"; title = "Prediction"; ObjectID = "h7s-0Y-HgM"; */
+"h7s-0Y-HgM.title" = "Передбачення";
+
+/* Class = "UILabel"; text = "Blitz"; ObjectID = "mWD-cm-NW1"; */
+"mWD-cm-NW1.text" = "Бліц";

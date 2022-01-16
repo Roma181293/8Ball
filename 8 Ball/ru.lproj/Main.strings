@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "Answer"; ObjectID = "162-bS-VCH"; */
+"162-bS-VCH.text" = "Answer";
+
+/* Class = "UILabel"; text = "Question"; ObjectID = "A8r-b0-Pln"; */
+"A8r-b0-Pln.text" = "Question";
+
+/* Class = "UIButton"; configuration.title = "New question"; ObjectID = "Lzn-uj-1Y2"; */
+"Lzn-uj-1Y2.configuration.title" = "New question";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Lzn-uj-1Y2"; */
+"Lzn-uj-1Y2.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Type"; ObjectID = "X3e-EI-jY8"; */
+"X3e-EI-jY8.text" = "Type";
+
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "b8z-z0-XnN"; */
+"b8z-z0-XnN.title" = "Settings";
+
+/* Class = "UITabBarItem"; title = "Prediction"; ObjectID = "h7s-0Y-HgM"; */
+"h7s-0Y-HgM.title" = "Prediction";
+
+/* Class = "UILabel"; text = "Blitz"; ObjectID = "mWD-cm-NW1"; */
+"mWD-cm-NW1.text" = "Blitz";
