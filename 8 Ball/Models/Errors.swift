@@ -20,13 +20,13 @@ extension ResponseError: LocalizedError {
 }
 
 enum URLError: Error {
-    case badURL(url: String)
+    case invalidURL(url: String)
 }
 
 extension URLError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case let .badURL(url) : return String(format: NSLocalizedString("Bad URL %@.", comment: ""),url)
+        case let .invalidURL(url) : return String(format: NSLocalizedString("Invalid URL %@.", comment: ""),url)
         }
     }
 }
