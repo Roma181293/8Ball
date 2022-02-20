@@ -9,28 +9,27 @@ import UIKit
 import CoreData
 
 
-protocol AnswerListRefreshProtocol {
+protocol AnswerListListener {
     func refreshData()
 }
 
-class AnswersTableViewController: UITableViewController {
-
-    let cdm = CoreDataManager.shared
-    let context = CoreDataManager.shared.persistentContainer.viewContext
+class AnswerListTableViewController: UITableViewController {
     
-    lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
+    private let coreDataManager = CoreDataManager.shared
+    private let context = CoreDataManager.shared.persistentContainer.viewContext
+    
+    private var router : AnswerListRouter!
+    
+    private lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
         let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
         fetchRequest.fetchBatchSize = 20
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        
-        return frc
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        router = AnswerListRouter(viewController: self)
         self.navigationItem.title = NSLocalizedString("Answers", comment: "")
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "AnswerCell_ID")
@@ -39,62 +38,47 @@ class AnswersTableViewController: UITableViewController {
         addButton.image = UIImage(systemName: "plus")
         self.navigationItem.rightBarButtonItem = addButton
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshData()
     }
     
     @objc private func addAnswer(){
-        let vc = AnswerEditorViewController()
-        vc.delegate = self
-        vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        router.route(to: .addAnswer(delegate: self))
     }
-    
-    // MARK: - Table view data source
+}
 
+
+// MARK: - Table view data source
+extension AnswerListTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController.sections?[section].numberOfObjects  ?? 0
     }
+}
 
-    
+
+// MARK: - Table view delegate
+extension AnswerListTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell(style: .value1, reuseIdentifier: "AnswerCell_ID")
         if cell == nil {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
         let answer = fetchedResultsController.object(at: indexPath)
-        var type = ""
-        switch answer.type {
-        case AnswerType.affirmative.rawValue: type =  "🙂"
-        case AnswerType.neutral.rawValue: type = "😐"
-        case AnswerType.contrary.rawValue: type = "🙁"
-        case AnswerType.unknown.rawValue: type = "😳"
-        default: type = "🤷‍♂️"
-        }
-        
-        cell.textLabel?.text = type + "  " + (answer.title ?? "")
+        cell.textLabel?.text = AnswerType(rawValue: answer.type).toEmoji() + "  " + (answer.title ?? "")
         cell.detailTextLabel?.text = answer.createdByUser ? "🧒" : "🤖"
         return cell
     }
     
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let answer = fetchedResultsController.object(at: indexPath)
         if answer.createdByUser {
-            let vc = AnswerEditorViewController()
-            vc.answer = answer
-            vc.delegate = self
-            vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-            vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            router.route(to: .editAnswer(answer: answer, delegate: self))
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -103,7 +87,7 @@ class AnswersTableViewController: UITableViewController {
         if editingStyle == .delete {
             do {
                 try AnswerManager.deleteAnswer(fetchedResultsController.object(at: indexPath), context: context)
-                try cdm.saveContext(context)
+                try coreDataManager.saveContext(context)
                 try fetchedResultsController.performFetch()
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -114,14 +98,14 @@ class AnswersTableViewController: UITableViewController {
     }
 }
 
-extension AnswersTableViewController: AnswerListRefreshProtocol {
+extension AnswerListTableViewController: AnswerListListener {
     func refreshData(){
         do {
             try fetchedResultsController.performFetch()
             tableView.reloadData()
         }
         catch let error {
-           errorHandler(error: error)
+            errorHandler(error: error)
         }
     }
 }

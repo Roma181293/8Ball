@@ -7,44 +7,42 @@
 
 import Foundation
 
-enum PredictionMode{
+enum PredictionServiceMode{
     case question
     case blitz
 }
 
-enum AnswerType: Int16{
-    case affirmative = 0 // "🙂"
-    case neutral = 1 // "😐"
-    case contrary = 2 // "🙁"
-    case unknown = 3 // "😳"
-}
-
-
-protocol PredictionDelegate {
-    func setPredictionMode(_ mode: PredictionMode)
-    func presentPrediction(answer: String, type: AnswerType)
+protocol PredictionServiceDelegate {
+    func setPredictionMode(_ mode: PredictionServiceMode)
+    func showPrediction(answer: String, type: AnswerType)
     func errorHandler(error: Error)
 }
 
 class PredictionService {
     
-    private let cdm = CoreDataManager.shared
+    private let coreDataManager = CoreDataManager.shared
+    private var predictionProvider: PredictionProvider?
+    
+    private var delegate:PredictionServiceDelegate{
+        didSet{
+            delegate.setPredictionMode(mode)
+        }
+    }
+    
     private var isWaitingForPrediction: Bool = false
     private var isReadyToShow: Bool = false
     private var useCustomAnswers: Bool = false
-    private var mode: PredictionMode = .blitz
+    private var mode: PredictionServiceMode = .blitz
     
     private var question: String?
     private var answer: String?
     private var answerType: AnswerType?
     
-    var delegate:PredictionDelegate?{
-        didSet{
-            delegate?.setPredictionMode(mode)
-        }
-    }
-    
-    init(){
+    init(delegate: PredictionServiceDelegate) {
+        self.delegate = delegate
+        delegate.setPredictionMode(mode)
+        self.predictionProvider = RemotePredictionService(networkDataProvider: NetworkService())
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.setUseCustomAnswers), name: .useCustomAnswers, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.setDoNotUseCustomAnswers), name: .doNotUseCustomAnswers, object: nil)
     }
@@ -56,12 +54,18 @@ class PredictionService {
     
     @objc private func setUseCustomAnswers() {
         useCustomAnswers = true
+        predictionProvider = DBPredictionService(context: coreDataManager.persistentContainer.viewContext)
     }
     
     @objc private func setDoNotUseCustomAnswers() {
         useCustomAnswers = false
+        predictionProvider = RemotePredictionService(networkDataProvider: NetworkService())
     }
     
+    //For test purpose only
+    public func setPredictionProvider(_ predictionProvider: PredictionProvider) {
+        self.predictionProvider = predictionProvider
+    }
     
     public func newQuestion(_ question: String) throws {
         guard !isWaitingForPrediction else {throw PredictionServiceError.predictionInProgress}
@@ -85,7 +89,7 @@ class PredictionService {
         answer = nil
         answerType = nil
         
-        delegate?.setPredictionMode(mode)
+        delegate.setPredictionMode(mode)
     }
     
     public func predict() throws {
@@ -99,36 +103,19 @@ class PredictionService {
         
         isWaitingForPrediction = true
         
-        if useCustomAnswers {
-         
-           try customPrediction()
-            
-        }
-        else {
-           try servicePrediction()
-        }
-    }
-    
-    public func showPrediction() {
-        self.isReadyToShow = true
-        guard !isWaitingForPrediction, let answer = answer, let answerType = answerType else {return}
-        self.delegate?.presentPrediction(answer: answer, type: answerType)
-        self.isReadyToShow = false
-    }
-    
-    private func servicePrediction() throws {
-        EightBallPredictionService.getPredictionForQuestion(question, completion: {(magicData, error) in
+        predictionProvider?.getPredictionForQuestion(question, completion: {(prediction, error) in
             
             self.isWaitingForPrediction = false
             
             if let error = error {
-                self.delegate?.errorHandler(error: error)
+                self.delegate.errorHandler(error: error)
                 self.isReadyToShow = false
             }
-            if let magicData = magicData {
+            
+            if let prediction = prediction {
                 
-                let answerNew = magicData.magic.answer
-                let typeNew = magicData.getType()
+                let answerNew = prediction.getAnswer()
+                let typeNew = prediction.getType()
                 
                 if self.mode == .question {
                     //Add question with answer to the DB
@@ -136,53 +123,29 @@ class PredictionService {
                         
                         let context = CoreDataManager.shared.persistentContainer.newBackgroundContext()
                         
-                        let storedAnswer = AnswerManager.getOrCreateAnswer(answerNew, type: typeNew, createdByUser: false, context: context)
+                        let storedAnswer = AnswerManager.getOrCreateAnswer(answerNew, type: typeNew, createdByUser: self.useCustomAnswers, context: context)
                         PredictionHistoryManager.createPediction(question: self.question!, answer: storedAnswer, context: context)
-                        try self.cdm.saveContext(context)
+                        try self.coreDataManager.saveContext(context)
                     }
                     catch let error {
-                        self.delegate?.errorHandler(error: error)
+                        self.delegate.errorHandler(error: error)
                     }
                 }
                 
                 if self.isReadyToShow {
-                    self.delegate?.presentPrediction(answer: magicData.magic.answer, type: magicData.getType())
+                    self.delegate.showPrediction(answer: prediction.getAnswer(), type: prediction.getType())
                     self.isReadyToShow = false
                 }
                 self.answer = answerNew
                 self.answerType = typeNew
-                print(#function,"Bot answer", answerNew, typeNew)
             }
         })
     }
-    private func customPrediction() throws {
-        self.isWaitingForPrediction = false
-        let context = CoreDataManager.shared.persistentContainer.viewContext
-
-        if let ans = AnswerManager.getRandomAnswer(context: context) {
-            if self.mode == .question {
     
-                PredictionHistoryManager.createPediction(question: self.question!, answer: ans, context: context)
-                try self.cdm.saveContext(context)
-            
-            }
-            if self.isReadyToShow {
-                self.delegate?.presentPrediction(answer: ans.title!, type: answerType ?? .unknown)
-                self.isReadyToShow = false
-            }
-            self.answer = ans.title
-            switch ans.type {
-            case AnswerType.affirmative.rawValue: self.answerType = .affirmative
-            case AnswerType.contrary.rawValue: self.answerType = .contrary
-            case AnswerType.neutral.rawValue: self.answerType = .neutral
-            case AnswerType.unknown.rawValue: self.answerType = .unknown
-            default: self.answerType = nil
-            }
-            print(#function,"Custom answer", answer, answerType)
-            
-        }
-        else {
-            throw PredictionServiceError.customAnswerNotFound
-        }
+    public func showPrediction() {
+        self.isReadyToShow = true
+        guard !isWaitingForPrediction, let answer = answer, let answerType = answerType else {return}
+        self.delegate.showPrediction(answer: answer, type: answerType)
+        self.isReadyToShow = false
     }
 }

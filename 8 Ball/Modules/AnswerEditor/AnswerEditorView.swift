@@ -1,19 +1,28 @@
 //
-//  AnswerEditorViewController.swift
+//  AnswerEditorView.swift
 //  8 Ball
 //
-//  Created by Roman Topchii on 15.01.2022.
+//  Created by Roman Topchii on 20.02.2022.
 //
 
 import UIKit
 
-class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
+protocol AnswerEditorViewInput {
+    func setTextFieldDelegate(_ delegate: UITextFieldDelegate)
+    func displayAnswer(_ answer: Answer)
+}
+
+protocol AnswerEditorViewOutput {
+    func getAnswer() -> String
+    func getType() -> AnswerType
+}
+
+class AnswerEditorView: UIView {
     
-    var answer: Answer?
+   private var answerEditorViewControllerInput: AnswerEditorViewControllerInput!
     
-    var delegate : AnswerListRefreshProtocol!
-    
-    let bluredView: UIView = {
+    //MARK: - Views declaration
+    private let bluredView: UIView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -21,7 +30,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return blurEffectView
     }()
     
-    let mainView: UIView = {
+    private let mainView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 10
@@ -29,7 +38,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return view
     }()
     
-    let mainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -39,8 +48,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return stackView
     }()
     
-    
-    let typeLabel: UILabel = {
+    private let typeLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Answer type", comment: "")
         label.textAlignment = .center
@@ -48,14 +56,14 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    let typeSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["🙂","😐","🙁"])
+    private let typeSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: ["😳","😐","🙁","🙂"])//AnswerType.allCases)//
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
     }()
     
-    let answerTextField: UITextField = {
+    private let answerTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = NSLocalizedString("Your answer", comment: "")
         textField.autocapitalizationType = .words
@@ -70,7 +78,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return textField
     }()
     
-    let buttonsStackView: UIStackView = {
+    private let buttonsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -80,7 +88,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return stackView
     }()
     
-    let discardButton: UIButton = {
+    private let discardButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 6
         button.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)
@@ -90,7 +98,7 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    let applyButton: UIButton = {
+    private let applyButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 5
         button.setTitle(NSLocalizedString("Add", comment: ""), for: .normal)
@@ -100,65 +108,49 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addMainView()
+    init(frame: CGRect, delegate: AnswerEditorViewControllerInput) {
+        super.init(frame: frame)
+        self.answerEditorViewControllerInput = delegate
+        self.addCustomView()
         
-        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(self.dismissAction(_:)))
+        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(self.dismissAction))
         bluredView.isUserInteractionEnabled = true
         bluredView.addGestureRecognizer(dismissTap)
         
-        discardButton.addTarget(self, action: #selector(self.dismissAction(_:)), for: .touchUpInside)
-        applyButton.addTarget(self, action: #selector(self.doneAction(_:)), for: .touchUpInside)
+        discardButton.addTarget(self, action:  #selector(self.dismissAction), for: .touchUpInside)
         
-        answerTextField.delegate = self as UITextFieldDelegate
-        
-        configureUIForAnswer()
+        applyButton.addTarget(self, action:  #selector(self.applyAction), for: .touchUpInside)
     }
     
-    private func configureUIForAnswer() {
-        guard let answer = answer else {
-            return
-        }
-        applyButton.setTitle(NSLocalizedString("Save", comment: ""), for: .normal)
-        
-        answerTextField.text = answer.title
-        
-        if answer.type < 3 {
-            typeSegmentedControl.selectedSegmentIndex = Int(answer.type)
-        }
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    private func addMainView() {
+    private func addCustomView() {
         let minSpace: CGFloat = 5
         let maxSpace: CGFloat = 20
         
+        self.backgroundColor = .clear
         
-        view.backgroundColor = .clear
-
-        //MARK:- Blured View
-        view.addSubview(bluredView)
-        bluredView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        bluredView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        bluredView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bluredView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-
-        //MARK:- Main View
-        view.addSubview(mainView)
-        mainView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
-        mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
-        mainView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //Blured View
+        self.addSubview(bluredView)
+        bluredView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        bluredView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        bluredView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        bluredView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
-        //MARK:- Main Stack View
+        //Main View
+        self.addSubview(mainView)
+        mainView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        mainView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        mainView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
+        //Main Stack View
         mainView.addSubview(mainStackView)
         mainStackView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 10).isActive = true
         mainStackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -10).isActive = true
         mainStackView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 10).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -13).isActive = true
-        
-        
         mainStackView.addArrangedSubview(typeLabel)
         mainStackView.setCustomSpacing(minSpace, after: typeLabel)
         mainStackView.addArrangedSubview(typeSegmentedControl)
@@ -166,64 +158,48 @@ class AnswerEditorViewController: UIViewController, UITextFieldDelegate {
         mainStackView.addArrangedSubview(answerTextField)
         answerTextField.heightAnchor.constraint(equalToConstant: 34).isActive = true
         
-        //MARK:- Buttons Stack View
+        //Buttons Stack View
         mainStackView.addArrangedSubview(buttonsStackView)
         buttonsStackView.addArrangedSubview(discardButton)
         buttonsStackView.addArrangedSubview(applyButton)
     }
     
-    
-    @objc private func doneAction(_ sender: Any) {
-        do {
-            if answerTextField.text?.isEmpty == false {
-                
-                var type: AnswerType = .affirmative
-                switch typeSegmentedControl.selectedSegmentIndex {
-                case 0:
-                    type = .affirmative
-                case 1:
-                    type = .neutral
-                case 2:
-                    type = .contrary
-                default:
-                    type = .unknown
-                }
-                
-                let context = CoreDataManager.shared.persistentContainer.viewContext
-                if let answer = answer {
-                    AnswerManager.editAnswer(answer, answerString: answerTextField.text!, type: type, context: context)
-                }
-                else {
-                   try  AnswerManager.createAnswer(answerTextField.text!, type: type, createdByUser: true, context: context)
-                }
-                try CoreDataManager.shared.saveContext(context)
-                delegate.refreshData()
-                dismiss(animated: true, completion: nil)
-            }
-            else {
-                throw AnswerError.emptyAnswer
-            }
-        }catch let error {
-            errorHandler(error: error)
-        }
-        
+    @objc private func applyAction() {
+        answerEditorViewControllerInput.applyAction()
     }
     
-    @objc private func dismissAction(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+    @objc private func dismissAction() {
+        answerEditorViewControllerInput.dismissAction()
     }
-    
-    private func configureSegmentedControls() {
-        guard let answer = answer, answer.type < 3 else {return}
-        typeSegmentedControl.selectedSegmentIndex = Int(answer.type)
-    }
+}
 
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+
+//MARK: - AnswerEditorViewInput
+extension AnswerEditorView: AnswerEditorViewInput {
+    
+    func setTextFieldDelegate(_ delegate: UITextFieldDelegate) {
+        answerTextField.delegate = delegate
     }
     
-    func textFieldShouldReturn(_ textField : UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    func displayAnswer(_ answer: Answer) {
+        applyButton.setTitle(NSLocalizedString("Save", comment: ""), for: .normal)
+        
+        answerTextField.text = answer.title
+        
+        if answer.type >= 0 && answer.type <= 3 {
+            typeSegmentedControl.selectedSegmentIndex = Int(answer.type)
+        }
+    }
+}
+
+
+//MARK: - AnswerEditorViewOutput
+extension AnswerEditorView: AnswerEditorViewOutput {
+    func getAnswer() -> String {
+        return answerTextField.text!
+    }
+    
+    func getType() -> AnswerType {
+        return AnswerType(rawValue: Int16(typeSegmentedControl.selectedSegmentIndex))
     }
 }

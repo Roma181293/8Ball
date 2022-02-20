@@ -1,5 +1,5 @@
 //
-//  CustomUIAlertController.swift
+//  CustomAlertController.swift
 //  8 Ball
 //
 //  Created by Roman Topchii on 15.01.2022.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class CustomUIAlertController: UIAlertController, UITextFieldDelegate {
+class CustomAlertController: UIAlertController, UITextFieldDelegate {
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = (textField.text ?? "") as NSString

@@ -13,7 +13,7 @@ enum SettingsList: String{
     case predictionHistory = "Prediction history"
 }
 
-protocol SettingsSetProtocol{
+protocol PredictionSettingsConfiguration{
     func useCustomAnswers(_ useCustomAnswers: Bool)
     func isCustomAnswers() -> Bool
 }
@@ -21,20 +21,23 @@ protocol SettingsSetProtocol{
 class SettingsTableViewController: UITableViewController {
 
     private let data : [SettingsList] = [.useCustomAnswers, .answers, .predictionHistory]
+    private var router: SettingsRouter?
     
     private var useCustomAnswers: Bool = false {
         didSet {
             if useCustomAnswers {
                 NotificationCenter.default.post(name: .useCustomAnswers, object: nil)
-                print("-->useCustomAnswers")
             }
             else {
                 NotificationCenter.default.post(name: .doNotUseCustomAnswers, object: nil)
-                print("-->doNotUseCustomAnswers")
             }
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        router = SettingsRouter(viewController: self)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -42,43 +45,36 @@ class SettingsTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return data.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell_ID", for: indexPath) as! SettingsTableViewCell
-  
         cell.configureCell(for: data[indexPath.row], with: self)
         return cell
     }
     
+    //MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        
         switch data[indexPath.row] {
         case .answers:
-            let vc = AnswersTableViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            router?.route(to: .answers)
         case .predictionHistory:
-            let vc = PredictionsHistoryTableViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            router?.route(to: .predictionHistory)
         default: break
         }
     }
 }
 
-
-extension SettingsTableViewController: SettingsSetProtocol {
+//MARK: - PredictionSettingsConfiguration
+extension SettingsTableViewController: PredictionSettingsConfiguration {
     func useCustomAnswers(_ useCustomAnswers: Bool) {
         self.useCustomAnswers = useCustomAnswers
     }

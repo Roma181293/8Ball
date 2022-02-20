@@ -9,8 +9,6 @@ import Foundation
 import CoreData
 
 
-
-
 class AnswerManager {
     
     static func getOrCreateAnswer(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) -> Answer {
@@ -29,6 +27,7 @@ class AnswerManager {
             return answer
         }
     }
+    
     private static func isAnswerExist(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) -> Bool {
         
         let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)

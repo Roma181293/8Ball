@@ -10,22 +10,19 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell {
     
-//    var dataItem: SettingsList!
+    private var delegate: PredictionSettingsConfiguration?
     
-    var delegate: SettingsSetProtocol!
-    
-    let titleLabel : UILabel = {
+    private let titleLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let switcher : UISwitch = {
+    private let switcher : UISwitch = {
         let switcher = UISwitch()
         switcher.translatesAutoresizingMaskIntoConstraints = false
         return switcher
     }()
-    
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -33,10 +30,8 @@ class SettingsTableViewCell: UITableViewCell {
         accessoryType = .none
     }
     
-    func configureCell(for dataItem: SettingsList, with delegate: SettingsSetProtocol) {
+    func configureCell(for dataItem: SettingsList, with delegate: PredictionSettingsConfiguration) {
         self.delegate = delegate
-//        self.dataItem = dataItem
-        
         
         switcher.isHidden = true
         
@@ -49,7 +44,6 @@ class SettingsTableViewCell: UITableViewCell {
             accessoryType = .disclosureIndicator
         }
         
-        
         contentView.addSubview(titleLabel)
         titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
@@ -60,7 +54,7 @@ class SettingsTableViewCell: UITableViewCell {
         switcher.addTarget(self, action: #selector(self.switching(_:)), for: .valueChanged)
     }
     
-    @objc func switching(_ sender: UISwitch) {
-        delegate.useCustomAnswers(sender.isOn)
+    @objc private func switching(_ sender: UISwitch) {
+        delegate?.useCustomAnswers(sender.isOn)
     }
 }

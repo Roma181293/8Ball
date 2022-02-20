@@ -8,20 +8,17 @@
 import UIKit
 import CoreData
 
-class PredictionsHistoryTableViewController: UITableViewController {
+class PredictionHistoryListTableViewController: UITableViewController {
     
-    let cdm = CoreDataManager.shared
+    let coreDataManager = CoreDataManager.shared
     let context = CoreDataManager.shared.persistentContainer.viewContext
     
     lazy var fetchedResultsController : NSFetchedResultsController<PredictionHistory> = {
         let fetchRequest : NSFetchRequest<PredictionHistory> = NSFetchRequest<PredictionHistory>(entityName: PredictionHistory.entity().name!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         fetchRequest.fetchBatchSize = 20
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        
-        return frc
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +31,19 @@ class PredictionsHistoryTableViewController: UITableViewController {
         refreshData()
     }
     
-    
-    // MARK: - Table view data source
-    
+    private func refreshData(){
+        do {
+            try fetchedResultsController.performFetch()
+            tableView.reloadData()
+        }
+        catch let error {
+            errorHandler(error: error)
+        }
+    }
+}
+
+// MARK: - Table view data source
+extension PredictionHistoryListTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -62,25 +69,21 @@ class PredictionsHistoryTableViewController: UITableViewController {
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         if let answer = prediction.answer {
-            var type = ""
-            switch answer.type {
-            case AnswerType.affirmative.rawValue: type =  "🙂"
-            case AnswerType.neutral.rawValue: type = "😐"
-            case AnswerType.contrary.rawValue: type = "🙁"
-            case AnswerType.unknown.rawValue: type = "😳"
-            default: type = "🤷‍♂️"
-            }
-            cell.detailTextLabel?.text = type + " " + (answer.title ?? "")
+            
+            cell.detailTextLabel?.text = AnswerType(rawValue: answer.type).toEmoji() + " " + (answer.title ?? "")
             cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
         }
         return cell
     }
-    
+}
+
+// MARK: - Table view delegate
+extension PredictionHistoryListTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             do {
                 try PredictionHistoryManager.deletePrediction(fetchedResultsController.object(at: indexPath), context: context)
-                try cdm.saveContext(context)
+                try coreDataManager.saveContext(context)
                 try fetchedResultsController.performFetch()
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -92,15 +95,5 @@ class PredictionsHistoryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func refreshData(){
-        do {
-            try fetchedResultsController.performFetch()
-            tableView.reloadData()
-        }
-        catch let error {
-            errorHandler(error: error)
-        }
     }
 }
