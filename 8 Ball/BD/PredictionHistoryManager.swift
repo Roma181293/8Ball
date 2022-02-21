@@ -10,7 +10,7 @@ import CoreData
 
 
 class PredictionHistoryManager{
-    static func createPediction(question: String, answer: Answer, context: NSManagedObjectContext) {
+    static func createPrediction(question: String, answer: Answer, context: NSManagedObjectContext) {
         let prediction = PredictionHistory(context: context)
         prediction.answer = answer
         prediction.date = Date()
