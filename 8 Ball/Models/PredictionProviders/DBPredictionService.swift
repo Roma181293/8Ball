@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class DBPredictionService: PredictionProvider {
+class DBPredictionService: PredictionProvider, UserAnswerPredictionProvider {
     
     private var context: NSManagedObjectContext
     

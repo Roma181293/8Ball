@@ -36,6 +36,7 @@ enum PredictionServiceError: Error {
     case emptyQuestion
     case noQuestion
     case customAnswerNotFound
+    case attributeDoesNotConformPredictionProviderProtocol
 }
 
 extension PredictionServiceError: LocalizedError {
@@ -45,6 +46,7 @@ extension PredictionServiceError: LocalizedError {
         case .emptyQuestion : return NSLocalizedString("Please enter question", comment: "")
         case .noQuestion: return NSLocalizedString("There is no question. Please add your question", comment: "")
         case .customAnswerNotFound: return NSLocalizedString("Custom answer not found. Please add them", comment: "")
+        case .attributeDoesNotConformPredictionProviderProtocol: return NSLocalizedString("Please contact to support. Method PredictionService.changePredictionProvider(notification:) receive atribute that does not conform PredictionService protocol", comment: "")
         }
     }
 }

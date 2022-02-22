@@ -9,6 +9,7 @@ import Foundation
 
 
 extension Notification.Name {
-    static let useCustomAnswers = Notification.Name("useCustomAnswers")
-    static let doNotUseCustomAnswers = Notification.Name("doNotUseCustomAnswers")
+    static let getIsUseCustomAnswers = Notification.Name("getIsUseCustomAnswers")
+    static let setUseCustomAnswersTo = Notification.Name("setUseCustomAnswersTo")
+    static let changePredictionProvider = Notification.Name("changePredictionProvider")
 }

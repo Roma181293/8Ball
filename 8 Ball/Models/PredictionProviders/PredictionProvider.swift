@@ -10,3 +10,5 @@ import Foundation
 protocol PredictionProvider {
     func getPredictionForQuestion(_ question : String?, completion: @escaping ((Predictible?, Error?) -> Void))
 }
+
+protocol UserAnswerPredictionProvider {}

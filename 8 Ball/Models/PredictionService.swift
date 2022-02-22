@@ -21,7 +21,7 @@ protocol PredictionServiceDelegate {
 class PredictionService {
     
     private let coreDataManager = CoreDataManager.shared
-    private var predictionProvider: PredictionProvider?
+    private var predictionProvider: PredictionProvider
     
     private var delegate: PredictionServiceDelegate {
         didSet{
@@ -38,28 +38,37 @@ class PredictionService {
     private var answer: String?
     private var answerType: AnswerType?
     
-    init(delegate: PredictionServiceDelegate) {
+    init(delegate: PredictionServiceDelegate, predictionProvider: PredictionProvider) {
         self.delegate = delegate
+        self.predictionProvider = predictionProvider
         delegate.setPredictionMode(mode)
-        self.predictionProvider = RemotePredictionService(networkDataProvider: NetworkService())
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setUseCustomAnswers), name: .useCustomAnswers, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setDoNotUseCustomAnswers), name: .doNotUseCustomAnswers, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changePredictionProvider(notification:)), name: .changePredictionProvider, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.getIsUseCustomAnswers), name: .getIsUseCustomAnswers, object: nil)
     }
     
     deinit{
-        NotificationCenter.default.removeObserver(self, name: .useCustomAnswers, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .doNotUseCustomAnswers, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .changePredictionProvider, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .getIsUseCustomAnswers, object: nil)
     }
     
-    @objc private func setUseCustomAnswers() {
-        useCustomAnswers = true
-        predictionProvider = DBPredictionService(context: coreDataManager.persistentContainer.viewContext)
+    @objc private func getIsUseCustomAnswers() {
+        NotificationCenter.default.post(name: .setUseCustomAnswersTo, object: nil, userInfo: ["setUseCustomAnswersTo": useCustomAnswers])
     }
     
-    @objc private func setDoNotUseCustomAnswers() {
-        useCustomAnswers = false
-        predictionProvider = RemotePredictionService(networkDataProvider: NetworkService())
+    @objc private func changePredictionProvider(notification: NSNotification) {
+        if let predictionProvider = notification.userInfo?["predictionProvider"] as? PredictionProvider {
+            self.predictionProvider = predictionProvider
+            
+            if predictionProvider is UserAnswerPredictionProvider {
+                useCustomAnswers = true
+            }
+            else {
+                useCustomAnswers = false
+            }
+        }
+        else {
+            delegate.errorHandler(error: PredictionServiceError.attributeDoesNotConformPredictionProviderProtocol)
+        }
     }
     
     //For test purpose only
@@ -103,7 +112,7 @@ class PredictionService {
         
         isWaitingForPrediction = true
         
-        predictionProvider?.getPredictionForQuestion(question, completion: { (prediction, error) in
+        predictionProvider.getPredictionForQuestion(question, completion: { (prediction, error) in
             self.isWaitingForPrediction = false
             
             if let error = error {
@@ -117,7 +126,6 @@ class PredictionService {
                 if self.mode == .question {
                     //Add question with answer to the DB
                     do {
-                        
                         let context = CoreDataManager.shared.persistentContainer.newBackgroundContext()
                         
                         let storedAnswer = AnswerManager.getOrCreateAnswer(answerNew, type: typeNew, createdByUser: self.useCustomAnswers, context: context)

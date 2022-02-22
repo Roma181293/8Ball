@@ -34,7 +34,7 @@ class PredictionViewController: UIViewController {
         questionLabel.text = ""
         typeLabel.text = ""
         
-        service = PredictionService(delegate: self)
+        service = PredictionService(delegate: self, predictionProvider: RemotePredictionService(networkDataProvider: NetworkService()))
         router = PredictionRouter(viewController: self)
         
         answerLabel.text = NSLocalizedString("Ask me whatever you want to know", comment: "")
