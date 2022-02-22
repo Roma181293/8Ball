@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell {
     
-    private var delegate: PredictionSettingsConfiguration?
+    private let delegate: PredictionSettingsConfiguration
     
     private let titleLabel : UILabel = {
         let label = UILabel()
@@ -30,8 +30,10 @@ class SettingsTableViewCell: UITableViewCell {
         accessoryType = .none
     }
     
-    func configureCell(for dataItem: SettingsList, with delegate: PredictionSettingsConfiguration) {
+    init(style: UITableViewCell.CellStyle, reuseIdentifier: String?,for dataItem: SettingsList, with delegate: PredictionSettingsConfiguration) {
         self.delegate = delegate
+        
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         switcher.isHidden = true
         
@@ -54,7 +56,11 @@ class SettingsTableViewCell: UITableViewCell {
         switcher.addTarget(self, action: #selector(self.switching(_:)), for: .valueChanged)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc private func switching(_ sender: UISwitch) {
-        delegate?.useCustomAnswers(sender.isOn)
+        delegate.useCustomAnswers(sender.isOn)
     }
 }

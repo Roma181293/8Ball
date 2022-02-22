@@ -74,8 +74,7 @@ extension SettingsTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell_ID", for: indexPath) as! SettingsTableViewCell
-        cell.configureCell(for: data[indexPath.row], with: self)
+        let cell = SettingsTableViewCell(style: .default, reuseIdentifier: "SettingsCell_ID", for: data[indexPath.row], with: self)
         return cell
     }
 }
