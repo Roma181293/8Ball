@@ -18,7 +18,7 @@ class AnswerListTableViewController: UITableViewController {
     private let coreDataManager = CoreDataManager.shared
     private let context = CoreDataManager.shared.persistentContainer.viewContext
     
-    private var router : AnswerListRouter!
+    private var router: AnswerListRouter!
     
     private lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
         let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
@@ -70,7 +70,7 @@ extension AnswerListTableViewController {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
         let answer = fetchedResultsController.object(at: indexPath)
-        cell.textLabel?.text = AnswerType(rawValue: answer.type).toEmoji() + "  " + (answer.title ?? "")
+        cell.textLabel?.text = (AnswerType(rawValue: answer.type) ?? .unknown).toEmoji() + "  " + (answer.title ?? "")
         cell.detailTextLabel?.text = answer.createdByUser ? "🧒" : "🤖"
         return cell
     }

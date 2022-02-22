@@ -13,18 +13,7 @@ enum AnswerType: Int16, CaseIterable {
     case contrary = 2
     case affirmative = 3
     
-    
-    init(rawValue value: Int16) {
-        switch value {
-        case 0: self = .unknown
-        case 1: self = .neutral
-        case 2: self = .contrary
-        case 3: self = .affirmative
-        default: self = .unknown
-        }
-    }
-    
-    init(fromString: String){
+    init(fromString: String) {
         switch fromString {
         case "Affirmative": self = .affirmative
         case "Neutral": self = .neutral

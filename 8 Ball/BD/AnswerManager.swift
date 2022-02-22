@@ -52,7 +52,6 @@ class AnswerManager {
         answer.type = type.rawValue
     }
     
-    
     static func deleteAnswer(_ answer: Answer, context: NSManagedObjectContext) throws {
         guard answer.predictionHistory?.allObjects.isEmpty == true else {
             throw AnswerError.answerUsedInPrediction

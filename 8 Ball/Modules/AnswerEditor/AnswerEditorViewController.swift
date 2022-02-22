@@ -16,14 +16,14 @@ class AnswerEditorViewController: UIViewController {
     
     var answer: Answer?
     
-    private var answerListListener : AnswerListListener!
+    private let answerListListener : AnswerListListener
     
     lazy var answerEditorViewInput: AnswerEditorViewInput  = { return view.subviews.first! as! AnswerEditorViewInput }()
     lazy var answerEditorViewOutput: AnswerEditorViewOutput  = { return view.subviews.first! as! AnswerEditorViewOutput }()
     
     init(answerListListener: AnswerListListener) {
-        super.init(nibName: nil, bundle: nil)
         self.answerListListener = answerListListener
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {

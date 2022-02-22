@@ -19,7 +19,7 @@ protocol AnswerEditorViewOutput {
 
 class AnswerEditorView: UIView {
     
-   private var answerEditorViewControllerInput: AnswerEditorViewControllerInput!
+   private let answerEditorViewControllerInput: AnswerEditorViewControllerInput
     
     //MARK: - Views declaration
     private let bluredView: UIView = {
@@ -109,9 +109,11 @@ class AnswerEditorView: UIView {
     }()
     
     init(frame: CGRect, delegate: AnswerEditorViewControllerInput) {
+        answerEditorViewControllerInput = delegate
+        
         super.init(frame: frame)
-        self.answerEditorViewControllerInput = delegate
-        self.addCustomView()
+        
+        addCustomView()
         
         let dismissTap = UITapGestureRecognizer(target: self, action: #selector(self.dismissAction))
         bluredView.isUserInteractionEnabled = true
@@ -200,6 +202,6 @@ extension AnswerEditorView: AnswerEditorViewOutput {
     }
     
     func getType() -> AnswerType {
-        return AnswerType(rawValue: Int16(typeSegmentedControl.selectedSegmentIndex))
+        return AnswerType(rawValue: Int16(typeSegmentedControl.selectedSegmentIndex)) ?? .unknown
     }
 }

@@ -15,7 +15,7 @@ enum AnswerListDestination: RoutingDestinationBase {
 class AnswerListRouter: Router {
     typealias RoutingDestination = AnswerListDestination
     
-    private unowned var viewController: UIViewController!
+    private unowned let viewController: UIViewController
     
     init(viewController: UIViewController) {
         self.viewController = viewController

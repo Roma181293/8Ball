@@ -18,7 +18,7 @@ class DBPredictionService: PredictionProvider {
     
     func getPredictionForQuestion(_ question : String? = nil, completion: @escaping ((Predictible?, Error?) -> Void)) {
         if let randomAnswer = AnswerManager.getRandomAnswer(context: context) {
-                completion(Prediction(question: question, answer: randomAnswer), nil)
+            completion(Prediction(question: question, answer: randomAnswer), nil)
         }
         else {
             completion (nil, PredictionServiceError.customAnswerNotFound)

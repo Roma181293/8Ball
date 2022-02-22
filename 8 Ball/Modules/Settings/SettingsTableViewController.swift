@@ -13,7 +13,7 @@ enum SettingsList: String{
     case predictionHistory = "Prediction history"
 }
 
-protocol PredictionSettingsConfiguration{
+protocol PredictionSettingsConfiguration {
     func useCustomAnswers(_ useCustomAnswers: Bool)
     func isCustomAnswers() -> Bool
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PredictionServiceMode{
+enum PredictionServiceMode {
     case question
     case blitz
 }
@@ -23,7 +23,7 @@ class PredictionService {
     private let coreDataManager = CoreDataManager.shared
     private var predictionProvider: PredictionProvider?
     
-    private var delegate:PredictionServiceDelegate{
+    private var delegate: PredictionServiceDelegate {
         didSet{
             delegate.setPredictionMode(mode)
         }
@@ -97,14 +97,13 @@ class PredictionService {
         if mode == .blitz {
             question = nil
         }
-        else if mode == .question && (question == nil || question?.isEmpty==true){
+        else if mode == .question && (question == nil || question?.isEmpty==true) {
             throw PredictionServiceError.noQuestion
         }
         
         isWaitingForPrediction = true
         
-        predictionProvider?.getPredictionForQuestion(question, completion: {(prediction, error) in
-            
+        predictionProvider?.getPredictionForQuestion(question, completion: { (prediction, error) in
             self.isWaitingForPrediction = false
             
             if let error = error {
@@ -113,10 +112,8 @@ class PredictionService {
             }
             
             if let prediction = prediction {
-                
                 let answerNew = prediction.getAnswer()
                 let typeNew = prediction.getType()
-                
                 if self.mode == .question {
                     //Add question with answer to the DB
                     do {
@@ -143,9 +140,9 @@ class PredictionService {
     }
     
     public func showPrediction() {
-        self.isReadyToShow = true
+        isReadyToShow = true
         guard !isWaitingForPrediction, let answer = answer, let answerType = answerType else {return}
-        self.delegate.showPrediction(answer: answer, type: answerType)
-        self.isReadyToShow = false
+        delegate.showPrediction(answer: answer, type: answerType)
+        isReadyToShow = false
     }
 }

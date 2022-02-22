@@ -9,17 +9,15 @@ import Foundation
 
 class RemotePredictionService: PredictionProvider {
     
-    private let networkDataProvider: NetworkDataProvider!
+    private let networkDataProvider: NetworkDataProvider
     
     init(networkDataProvider: NetworkDataProvider) {
         self.networkDataProvider = networkDataProvider
     }
     
     func getPredictionForQuestion(_ question : String? = nil, completion: @escaping ((Predictible?, Error?) -> Void)) {
-        
         let apiHost = "https://8ball.delegator.com/"
         let apiPath = "magic/JSON/" + (question ?? "DefaultQuestion")
-        
         guard let escapedPath = apiPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlHostAllowed),
               let url = URL(string: "\(apiHost)\(escapedPath)")  else {
                   completion(nil, URLError.invalidURL(url: "\(apiHost)\(apiPath)"))

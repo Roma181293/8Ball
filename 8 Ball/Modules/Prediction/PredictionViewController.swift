@@ -17,8 +17,8 @@ protocol PredictionPresenter {
 
 class PredictionViewController: UIViewController {
     
-    var model: PredictionService!
-    var router: PredictionRouter!
+    private var service: PredictionService!
+    private var router: PredictionRouter!
     
     //MARK: - IBOutlets
     @IBOutlet weak var blitzLabel: UILabel!
@@ -34,7 +34,7 @@ class PredictionViewController: UIViewController {
         questionLabel.text = ""
         typeLabel.text = ""
         
-        model = PredictionService(delegate: self)
+        service = PredictionService(delegate: self)
         router = PredictionRouter(viewController: self)
         
         answerLabel.text = NSLocalizedString("Ask me whatever you want to know", comment: "")
@@ -52,7 +52,7 @@ class PredictionViewController: UIViewController {
         do{
             answerLabel.text = ""
             typeLabel.text = ""
-            try model.predict()
+            try service.predict()
         }
         catch let error {
             errorHandler(error: error)
@@ -73,7 +73,7 @@ class PredictionViewController: UIViewController {
     //MARK: - IBAction methods
     @IBAction func changePredictionMode(_ sender: UISwitch) {
         do{
-            try model.changePredictionMode()
+            try service.changePredictionMode()
         }
         catch let error {
             errorHandler(error: error)
@@ -115,7 +115,7 @@ extension PredictionViewController: PredictionServiceDelegate {
 extension PredictionViewController: QuestionListener {
     func refreshQuestion(_ question: String?) {
         do{
-            try model.newQuestion(question!)
+            try service.newQuestion(question!)
             questionLabel.text = (question ?? "") + "?"
         }
         catch let error {
@@ -128,6 +128,6 @@ extension PredictionViewController: QuestionListener {
 //MARK: - PredictionPresenter
 extension PredictionViewController: PredictionPresenter {
     func presentPrediction() {
-        model.showPrediction()
+        service.showPrediction()
     }
 }

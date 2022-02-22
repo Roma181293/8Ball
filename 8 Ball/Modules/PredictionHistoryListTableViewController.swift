@@ -70,7 +70,7 @@ extension PredictionHistoryListTableViewController {
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         if let answer = prediction.answer {
             
-            cell.detailTextLabel?.text = AnswerType(rawValue: answer.type).toEmoji() + " " + (answer.title ?? "")
+            cell.detailTextLabel?.text = (AnswerType(rawValue: answer.type) ?? .unknown).toEmoji() + " " + (answer.title ?? "")
             cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
         }
         return cell
