@@ -10,42 +10,42 @@ import CoreData
 
 
 protocol AnswerListListener {
-    func refreshData()
+    func fetchData()
 }
 
 class AnswerListTableViewController: UITableViewController {
     
+    private var answerListProvider: AnswerListProvider!
+    private var router: AnswerListRouter!
+    
     private let coreDataManager = CoreDataManager.shared
     private let context = CoreDataManager.shared.persistentContainer.viewContext
     
-    private var router: AnswerListRouter!
-    
-    private lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
-        let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
-        fetchRequest.fetchBatchSize = 20
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         router = AnswerListRouter(viewController: self)
-        self.navigationItem.title = NSLocalizedString("Answers", comment: "")
+        answerListProvider = AnswerManager(delegate: self, context: context)
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "AnswerCell_ID")
-        
-        let addButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(self.addAnswer))
-        addButton.image = UIImage(systemName: "plus")
-        self.navigationItem.rightBarButtonItem = addButton
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
+        fetchData()
     }
     
     @objc private func addAnswer(){
         router.route(to: .addAnswer(delegate: self))
+    }
+    
+    private func configureUI() {
+        self.navigationItem.title = NSLocalizedString("Answers", comment: "")
+        
+        let addButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(self.addAnswer))
+        addButton.image = UIImage(systemName: "plus")
+        self.navigationItem.rightBarButtonItem = addButton
     }
 }
 
@@ -53,11 +53,11 @@ class AnswerListTableViewController: UITableViewController {
 // MARK: - Table view data source
 extension AnswerListTableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return answerListProvider.numberOfSections()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.sections?[section].numberOfObjects  ?? 0
+        return answerListProvider.numberOfRowsInSection(section)
     }
 }
 
@@ -69,14 +69,14 @@ extension AnswerListTableViewController {
         if cell == nil {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
-        let answer = fetchedResultsController.object(at: indexPath)
+        let answer = answerListProvider.answerForIndexPath(indexPath)
         cell.textLabel?.text = (AnswerType(rawValue: answer.type) ?? .unknown).toEmoji() + "  " + (answer.title ?? "")
         cell.detailTextLabel?.text = answer.createdByUser ? "🧒" : "🤖"
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let answer = fetchedResultsController.object(at: indexPath)
+        let answer = answerListProvider.answerForIndexPath(indexPath)
         if answer.createdByUser {
             router.route(to: .editAnswer(answer: answer, delegate: self))
         }
@@ -86,9 +86,7 @@ extension AnswerListTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             do {
-                try AnswerManager.deleteAnswer(fetchedResultsController.object(at: indexPath), context: context)
-                try coreDataManager.saveContext(context)
-                try fetchedResultsController.performFetch()
+                try answerListProvider.deleteAnswerAtIndexPath(indexPath)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
             catch let error {
@@ -99,13 +97,18 @@ extension AnswerListTableViewController {
 }
 
 extension AnswerListTableViewController: AnswerListListener {
-    func refreshData(){
+    func fetchData(){
         do {
-            try fetchedResultsController.performFetch()
-            tableView.reloadData()
+            try answerListProvider.fetchData()
         }
         catch let error {
             errorHandler(error: error)
         }
+    }
+}
+
+extension AnswerListTableViewController: AnswerListPresenter {
+    func presentData() {
+        tableView.reloadData()
     }
 }

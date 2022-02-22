@@ -52,20 +52,20 @@ extension AnswerEditorViewController: UITextFieldDelegate {
 extension AnswerEditorViewController: AnswerEditorViewControllerInput {
     func applyAction() {
         do {
-            let answerText = answerEditorViewOutput.getAnswer()
-            if answerText.isEmpty == false {
+            let answerTitle = answerEditorViewOutput.getAnswer()
+            if answerTitle.isEmpty == false {
                 
                 let type: AnswerType = answerEditorViewOutput.getType()
                 
                 let context = CoreDataManager.shared.persistentContainer.viewContext
                 if let answer = answer {
-                    AnswerManager.editAnswer(answer, answerString: answerText, type: type, context: context)
+                    try AnswerManager.editAnswer(answer, answerTitle: answerTitle, type: type, context: context)
                 }
                 else {
-                    try  AnswerManager.createAnswer(answerText, type: type, createdByUser: true, context: context)
+                    try  AnswerManager.createAnswer(answerTitle, type: type, createdByUser: true, context: context)
                 }
                 try CoreDataManager.shared.saveContext(context)
-                answerListListener.refreshData()
+                answerListListener.fetchData()
                 dismissAction()
             }
             else {

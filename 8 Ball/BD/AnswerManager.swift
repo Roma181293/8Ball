@@ -8,9 +8,62 @@
 import Foundation
 import CoreData
 
+protocol AnswerListPresenter {
+    func presentData()
+    func errorHandler(error: Error)
+}
 
-class AnswerManager {
+protocol AnswerListProvider {
+    init(delegate: AnswerListPresenter, context: NSManagedObjectContext)
+    func fetchData() throws
+    func deleteAnswerAtIndexPath(_ indexPath: IndexPath) throws
+    func numberOfRowsInSection(_ section: Int) -> Int
+    func numberOfSections() -> Int
+    func answerForIndexPath(_ indexPath: IndexPath) -> Answer
+}
+
+class AnswerManager: AnswerListProvider {
     
+    private let delegate: AnswerListPresenter
+    private let context: NSManagedObjectContext
+    
+    private lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
+        let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
+        fetchRequest.fetchBatchSize = 20
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+    }()
+    
+    required init(delegate: AnswerListPresenter, context: NSManagedObjectContext) {
+        self.delegate = delegate
+        self.context = context
+    }
+    
+    func fetchData() throws {
+        try fetchedResultsController.performFetch()
+        delegate.presentData()
+    }
+    
+    func deleteAnswerAtIndexPath(_ indexPath: IndexPath) throws {
+        try AnswerManager.deleteAnswer(fetchedResultsController.object(at: indexPath), context: context)
+        try CoreDataManager.shared.saveContext(context)
+        try fetchedResultsController.performFetch()
+    }
+    
+    func numberOfRowsInSection(_ section: Int) -> Int {
+        return fetchedResultsController.sections?[section].numberOfObjects  ?? 0
+    }
+    
+    func numberOfSections() -> Int {
+        return 1
+    }
+    
+    func answerForIndexPath(_ indexPath: IndexPath) -> Answer {
+        fetchedResultsController.object(at: indexPath)
+    }
+}
+
+extension AnswerManager {
     static func getOrCreateAnswer(_ answerString: String, type: AnswerType, createdByUser: Bool, context: NSManagedObjectContext) -> Answer {
         let fetchRequest : NSFetchRequest<Answer> = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdByUser", ascending: true)]
@@ -47,8 +100,11 @@ class AnswerManager {
         getOrCreateAnswer(answerString, type: type, createdByUser: createdByUser, context: context)
     }
     
-    static func editAnswer(_ answer: Answer, answerString: String, type: AnswerType, context: NSManagedObjectContext){
-        answer.title = answerString
+    static func editAnswer(_ answer: Answer, answerTitle: String, type: AnswerType, context: NSManagedObjectContext) throws {
+        guard isAnswerExist(answerTitle, type: type, createdByUser: answer.createdByUser, context: context) else {
+            throw AnswerError.answerAlreadyExists
+        }
+        answer.title = answerTitle
         answer.type = type.rawValue
     }
     
