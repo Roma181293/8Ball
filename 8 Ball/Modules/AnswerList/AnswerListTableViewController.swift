@@ -18,14 +18,11 @@ class AnswerListTableViewController: UITableViewController {
     private var answerListProvider: AnswerListProvider!
     private var router: AnswerListRouter!
     
-    private let coreDataManager = CoreDataManager.shared
-    private let context = CoreDataManager.shared.persistentContainer.viewContext
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         router = AnswerListRouter(viewController: self)
-        answerListProvider = AnswerManager(delegate: self, context: context)
+        answerListProvider = AnswerManager(delegate: self, context: CoreDataManager.shared.persistentContainer.viewContext)
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "AnswerCell_ID")
         configureUI()
@@ -70,7 +67,7 @@ extension AnswerListTableViewController {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
         let answer = answerListProvider.answerForIndexPath(indexPath)
-        cell.textLabel?.text = (AnswerType(rawValue: answer.type) ?? .unknown).toEmoji() + "  " + (answer.title ?? "")
+        cell.textLabel?.text = (AnswerType(rawValue: Int(answer.type)) ?? .unknown).toEmoji() + "  " + (answer.title ?? "")
         cell.detailTextLabel?.text = answer.createdByUser ? "🧒" : "🤖"
         return cell
     }

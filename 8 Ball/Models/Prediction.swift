@@ -27,7 +27,7 @@ struct Prediction: Predictible {
     init(question: String?, answer: Answer) {
         self.question = question
         self.answer = answer.title ?? ""
-        self.type = AnswerType(rawValue: answer.type) ?? .unknown
+        self.type = AnswerType(rawValue: Int(answer.type)) ?? .unknown
     }
     
     func getType() -> AnswerType {

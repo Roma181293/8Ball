@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AnswerType: Int16, CaseIterable {
+enum AnswerType: Int, CaseIterable {
     case unknown = 0
     case neutral = 1
     case contrary = 2

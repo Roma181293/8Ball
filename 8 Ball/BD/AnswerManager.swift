@@ -74,7 +74,7 @@ extension AnswerManager {
         }
         else {
             let answer = Answer(context: context)
-            answer.type = type.rawValue
+            answer.type = Int16(type.rawValue)
             answer.title = answerString
             answer.createdByUser = createdByUser
             return answer
@@ -105,7 +105,7 @@ extension AnswerManager {
             throw AnswerError.answerAlreadyExists
         }
         answer.title = answerTitle
-        answer.type = type.rawValue
+        answer.type = Int16(type.rawValue)
     }
     
     static func deleteAnswer(_ answer: Answer, context: NSManagedObjectContext) throws {

@@ -188,8 +188,11 @@ extension AnswerEditorView: AnswerEditorViewInput {
         
         answerTextField.text = answer.title
         
-        if answer.type >= 0 && answer.type <= 3 {
+        if AnswerType(rawValue: Int(answer.type)) != nil {
             typeSegmentedControl.selectedSegmentIndex = Int(answer.type)
+        }
+        else {
+            typeSegmentedControl.selectedSegmentIndex = 0
         }
     }
 }
@@ -198,10 +201,10 @@ extension AnswerEditorView: AnswerEditorViewInput {
 //MARK: - AnswerEditorViewOutput
 extension AnswerEditorView: AnswerEditorViewOutput {
     func getAnswer() -> String {
-        return answerTextField.text!
+        return answerTextField.text ?? ""
     }
     
     func getType() -> AnswerType {
-        return AnswerType(rawValue: Int16(typeSegmentedControl.selectedSegmentIndex)) ?? .unknown
+        return AnswerType(rawValue: typeSegmentedControl.selectedSegmentIndex) ?? .unknown
     }
 }
