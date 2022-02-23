@@ -11,9 +11,9 @@ import CoreData
 
 class CoreDataManager {
     
-    public static let modelName = "8Ball"
+    private static let modelName = "8Ball"
     
-    public static let model: NSManagedObjectModel = {
+    private static let model: NSManagedObjectModel = {
         let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()

@@ -7,23 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B17B7C52790957B00E2F49E /* Magic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C42790957B00E2F49E /* Magic.swift */; };
-		2B17B7C72790963900E2F49E /* MagicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C62790963900E2F49E /* MagicData.swift */; };
+		2B0FF55327C6B6CD00A697CC /* EntityListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */; };
+		2B17B7C52790957B00E2F49E /* RemotePrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C42790957B00E2F49E /* RemotePrediction.swift */; };
+		2B17B7C72790963900E2F49E /* RemotePredictionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C62790963900E2F49E /* RemotePredictionData.swift */; };
 		2B660DAD279317BA00D48A78 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DAC279317BA00D48A78 /* CoreDataManager.swift */; };
 		2B660DB3279319E800D48A78 /* AnswerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DB2279319E800D48A78 /* AnswerManager.swift */; };
 		2B660DB52793211800D48A78 /* PredictionHistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DB42793211800D48A78 /* PredictionHistoryManager.swift */; };
 		2B660DB72793258700D48A78 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DB62793258700D48A78 /* SettingsTableViewController.swift */; };
 		2B660DBA27932CD600D48A78 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DB927932CD600D48A78 /* SettingsTableViewCell.swift */; };
 		2B660DBC27933AC100D48A78 /* Notification extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DBB27933AC100D48A78 /* Notification extension.swift */; };
-		2B660DBE279340CE00D48A78 /* AnswersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DBD279340CE00D48A78 /* AnswersTableViewController.swift */; };
+		2B660DBE279340CE00D48A78 /* AnswerListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DBD279340CE00D48A78 /* AnswerListTableViewController.swift */; };
 		2B660DC227936D4E00D48A78 /* UIViewController extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DC127936D4E00D48A78 /* UIViewController extension.swift */; };
 		2B660DC42793790800D48A78 /* AnswerEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DC32793790800D48A78 /* AnswerEditorViewController.swift */; };
-		2B660DC627937FCD00D48A78 /* PredictionsHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DC527937FCD00D48A78 /* PredictionsHistoryTableViewController.swift */; };
+		2B660DC627937FCD00D48A78 /* PredictionHistoryListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DC527937FCD00D48A78 /* PredictionHistoryListTableViewController.swift */; };
 		2B660DCC2793911200D48A78 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B660DCE2793911200D48A78 /* Localizable.strings */; };
+		2B6EEEBF27C144FF00DF269E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEEBE27C144FF00DF269E /* NetworkService.swift */; };
+		2B6EEEC527C14CA200DF269E /* Prediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEEC427C14CA200DF269E /* Prediction.swift */; };
+		2B6EEEC727C14D1100DF269E /* AnswerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEEC627C14D1100DF269E /* AnswerType.swift */; };
+		2B6EEECC27C17D1A00DF269E /* PredictionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEECB27C17D1A00DF269E /* PredictionProvider.swift */; };
+		2B6EEED027C196CA00DF269E /* DBPredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEECF27C196CA00DF269E /* DBPredictionService.swift */; };
+		2B6EEED227C19FF800DF269E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEED127C19FF800DF269E /* Router.swift */; };
+		2B6EEED527C1B71500DF269E /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEED427C1B71500DF269E /* SettingsRouter.swift */; };
+		2B6EEED827C1B74500DF269E /* AnswerListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEED727C1B74500DF269E /* AnswerListRouter.swift */; };
+		2B6EEEDD27C24D0B00DF269E /* PredictionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEEDC27C24D0B00DF269E /* PredictionRouter.swift */; };
+		2B6EEEE227C2B4BB00DF269E /* AnswerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6EEEE127C2B4BB00DF269E /* AnswerEditorView.swift */; };
 		2B76C379279212D400BEB7CF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C378279212D300BEB7CF /* Errors.swift */; };
 		2B76C37B2792131100BEB7CF /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C37A2792131100BEB7CF /* PredictionService.swift */; };
-		2B76C37F27921F4800BEB7CF /* 8BallPredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C37E27921F4800BEB7CF /* 8BallPredictionService.swift */; };
-		2B76C38127924B9400BEB7CF /* CustomUIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C38027924B9400BEB7CF /* CustomUIAlertController.swift */; };
+		2B76C37F27921F4800BEB7CF /* RemotePredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C37E27921F4800BEB7CF /* RemotePredictionService.swift */; };
+		2B76C38127924B9400BEB7CF /* CustomAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C38027924B9400BEB7CF /* CustomAlertController.swift */; };
 		2B76C3862792560400BEB7CF /* 8Ball.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B76C3842792560400BEB7CF /* 8Ball.xcdatamodeld */; };
 		2B85D86927908B030042858B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85D86827908B030042858B /* AppDelegate.swift */; };
 		2B85D86B27908B030042858B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85D86A27908B030042858B /* SceneDelegate.swift */; };
@@ -37,24 +48,35 @@
 
 /* Begin PBXFileReference section */
 		1F8427B3D9689970EB99F959 /* Pods-8 Ball.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-8 Ball.release.xcconfig"; path = "Target Support Files/Pods-8 Ball/Pods-8 Ball.release.xcconfig"; sourceTree = "<group>"; };
-		2B17B7C42790957B00E2F49E /* Magic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Magic.swift; sourceTree = "<group>"; };
-		2B17B7C62790963900E2F49E /* MagicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicData.swift; sourceTree = "<group>"; };
+		2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListProvider.swift; sourceTree = "<group>"; };
+		2B17B7C42790957B00E2F49E /* RemotePrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePrediction.swift; sourceTree = "<group>"; };
+		2B17B7C62790963900E2F49E /* RemotePredictionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePredictionData.swift; sourceTree = "<group>"; };
 		2B660DAC279317BA00D48A78 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		2B660DB2279319E800D48A78 /* AnswerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerManager.swift; sourceTree = "<group>"; };
 		2B660DB42793211800D48A78 /* PredictionHistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionHistoryManager.swift; sourceTree = "<group>"; };
 		2B660DB62793258700D48A78 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		2B660DB927932CD600D48A78 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		2B660DBB27933AC100D48A78 /* Notification extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification extension.swift"; sourceTree = "<group>"; };
-		2B660DBD279340CE00D48A78 /* AnswersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswersTableViewController.swift; sourceTree = "<group>"; };
+		2B660DBD279340CE00D48A78 /* AnswerListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerListTableViewController.swift; sourceTree = "<group>"; };
 		2B660DC127936D4E00D48A78 /* UIViewController extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController extension.swift"; sourceTree = "<group>"; };
 		2B660DC32793790800D48A78 /* AnswerEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerEditorViewController.swift; sourceTree = "<group>"; };
-		2B660DC527937FCD00D48A78 /* PredictionsHistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionsHistoryTableViewController.swift; sourceTree = "<group>"; };
+		2B660DC527937FCD00D48A78 /* PredictionHistoryListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionHistoryListTableViewController.swift; sourceTree = "<group>"; };
 		2B660DC72793902500D48A78 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Main.strings; sourceTree = "<group>"; };
 		2B660DCD2793911200D48A78 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2B6EEEBE27C144FF00DF269E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		2B6EEEC427C14CA200DF269E /* Prediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prediction.swift; sourceTree = "<group>"; };
+		2B6EEEC627C14D1100DF269E /* AnswerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerType.swift; sourceTree = "<group>"; };
+		2B6EEECB27C17D1A00DF269E /* PredictionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionProvider.swift; sourceTree = "<group>"; };
+		2B6EEECF27C196CA00DF269E /* DBPredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBPredictionService.swift; sourceTree = "<group>"; };
+		2B6EEED127C19FF800DF269E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		2B6EEED427C1B71500DF269E /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
+		2B6EEED727C1B74500DF269E /* AnswerListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerListRouter.swift; sourceTree = "<group>"; };
+		2B6EEEDC27C24D0B00DF269E /* PredictionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionRouter.swift; sourceTree = "<group>"; };
+		2B6EEEE127C2B4BB00DF269E /* AnswerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerEditorView.swift; sourceTree = "<group>"; };
 		2B76C378279212D300BEB7CF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		2B76C37A2792131100BEB7CF /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
-		2B76C37E27921F4800BEB7CF /* 8BallPredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 8BallPredictionService.swift; sourceTree = "<group>"; };
-		2B76C38027924B9400BEB7CF /* CustomUIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIAlertController.swift; sourceTree = "<group>"; };
+		2B76C37E27921F4800BEB7CF /* RemotePredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePredictionService.swift; sourceTree = "<group>"; };
+		2B76C38027924B9400BEB7CF /* CustomAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertController.swift; sourceTree = "<group>"; };
 		2B76C3852792560400BEB7CF /* 8Ball.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 8Ball.xcdatamodel; sourceTree = "<group>"; };
 		2B85D86527908B030042858B /* 8 Ball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "8 Ball.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B85D86827908B030042858B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,33 +111,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2B660DAE2793192E00D48A78 /* 8Ball Structs */ = {
+		2B660DAE2793192E00D48A78 /* Remote Service Structs */ = {
 			isa = PBXGroup;
 			children = (
-				2B17B7C42790957B00E2F49E /* Magic.swift */,
-				2B17B7C62790963900E2F49E /* MagicData.swift */,
+				2B17B7C42790957B00E2F49E /* RemotePrediction.swift */,
+				2B17B7C62790963900E2F49E /* RemotePredictionData.swift */,
 			);
-			path = "8Ball Structs";
+			path = "Remote Service Structs";
 			sourceTree = "<group>";
 		};
 		2B660DB02793197800D48A78 /* Customization */ = {
 			isa = PBXGroup;
 			children = (
 				2B660DBB27933AC100D48A78 /* Notification extension.swift */,
-				2B76C38027924B9400BEB7CF /* CustomUIAlertController.swift */,
+				2B76C38027924B9400BEB7CF /* CustomAlertController.swift */,
 				2B660DC127936D4E00D48A78 /* UIViewController extension.swift */,
 			);
 			path = Customization;
 			sourceTree = "<group>";
 		};
-		2B660DB1279319A400D48A78 /* Persistent */ = {
+		2B660DB1279319A400D48A78 /* BD */ = {
 			isa = PBXGroup;
 			children = (
 				2B660DAC279317BA00D48A78 /* CoreDataManager.swift */,
+				2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */,
 				2B660DB2279319E800D48A78 /* AnswerManager.swift */,
 				2B660DB42793211800D48A78 /* PredictionHistoryManager.swift */,
 			);
-			path = Persistent;
+			path = BD;
 			sourceTree = "<group>";
 		};
 		2B660DB827932CBA00D48A78 /* Cells */ = {
@@ -124,6 +147,60 @@
 				2B660DB927932CD600D48A78 /* SettingsTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		2B6EEEC027C1454900DF269E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2B6EEEBE27C144FF00DF269E /* NetworkService.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		2B6EEECA27C17CA700DF269E /* PredictionProviders */ = {
+			isa = PBXGroup;
+			children = (
+				2B6EEECB27C17D1A00DF269E /* PredictionProvider.swift */,
+				2B76C37E27921F4800BEB7CF /* RemotePredictionService.swift */,
+				2B6EEECF27C196CA00DF269E /* DBPredictionService.swift */,
+			);
+			path = PredictionProviders;
+			sourceTree = "<group>";
+		};
+		2B6EEED327C1B6F900DF269E /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2B660DB62793258700D48A78 /* SettingsTableViewController.swift */,
+				2B6EEED427C1B71500DF269E /* SettingsRouter.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		2B6EEED627C1B72900DF269E /* AnswerList */ = {
+			isa = PBXGroup;
+			children = (
+				2B660DBD279340CE00D48A78 /* AnswerListTableViewController.swift */,
+				2B6EEED727C1B74500DF269E /* AnswerListRouter.swift */,
+			);
+			path = AnswerList;
+			sourceTree = "<group>";
+		};
+		2B6EEEDB27C24CF100DF269E /* Prediction */ = {
+			isa = PBXGroup;
+			children = (
+				2B85D86C27908B030042858B /* PredictionViewController.swift */,
+				2B6EEEDC27C24D0B00DF269E /* PredictionRouter.swift */,
+			);
+			path = Prediction;
+			sourceTree = "<group>";
+		};
+		2B6EEEE027C2B49B00DF269E /* AnswerEditor */ = {
+			isa = PBXGroup;
+			children = (
+				2B660DC32793790800D48A78 /* AnswerEditorViewController.swift */,
+				2B6EEEE127C2B4BB00DF269E /* AnswerEditorView.swift */,
+			);
+			path = AnswerEditor;
 			sourceTree = "<group>";
 		};
 		2B85D85C27908B030042858B = {
@@ -150,9 +227,10 @@
 				2B896ED127BEE5C300E4E08F /* README.md */,
 				2B76C3842792560400BEB7CF /* 8Ball.xcdatamodeld */,
 				2B660DB02793197800D48A78 /* Customization */,
-				2B660DB1279319A400D48A78 /* Persistent */,
+				2B6EEEC027C1454900DF269E /* Networking */,
+				2B660DB1279319A400D48A78 /* BD */,
 				2B85D87D27908C230042858B /* Models */,
-				2B85D87C27908C150042858B /* ViewControllers */,
+				2B85D87C27908C150042858B /* Modules */,
 				2B660DB827932CBA00D48A78 /* Cells */,
 				2B85D86827908B030042858B /* AppDelegate.swift */,
 				2B85D86A27908B030042858B /* SceneDelegate.swift */,
@@ -165,25 +243,28 @@
 			path = "8 Ball";
 			sourceTree = "<group>";
 		};
-		2B85D87C27908C150042858B /* ViewControllers */ = {
+		2B85D87C27908C150042858B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				2B85D86C27908B030042858B /* PredictionViewController.swift */,
-				2B660DB62793258700D48A78 /* SettingsTableViewController.swift */,
-				2B660DBD279340CE00D48A78 /* AnswersTableViewController.swift */,
-				2B660DC32793790800D48A78 /* AnswerEditorViewController.swift */,
-				2B660DC527937FCD00D48A78 /* PredictionsHistoryTableViewController.swift */,
+				2B6EEED127C19FF800DF269E /* Router.swift */,
+				2B6EEEDB27C24CF100DF269E /* Prediction */,
+				2B6EEED327C1B6F900DF269E /* Settings */,
+				2B6EEED627C1B72900DF269E /* AnswerList */,
+				2B6EEEE027C2B49B00DF269E /* AnswerEditor */,
+				2B660DC527937FCD00D48A78 /* PredictionHistoryListTableViewController.swift */,
 			);
-			path = ViewControllers;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		2B85D87D27908C230042858B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2B660DAE2793192E00D48A78 /* 8Ball Structs */,
 				2B76C378279212D300BEB7CF /* Errors.swift */,
+				2B6EEEC427C14CA200DF269E /* Prediction.swift */,
+				2B6EEEC627C14D1100DF269E /* AnswerType.swift */,
+				2B660DAE2793192E00D48A78 /* Remote Service Structs */,
+				2B6EEECA27C17CA700DF269E /* PredictionProviders */,
 				2B76C37A2792131100BEB7CF /* PredictionService.swift */,
-				2B76C37E27921F4800BEB7CF /* 8BallPredictionService.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -317,23 +398,34 @@
 			files = (
 				2B85D86D27908B030042858B /* PredictionViewController.swift in Sources */,
 				2B660DB52793211800D48A78 /* PredictionHistoryManager.swift in Sources */,
-				2B17B7C72790963900E2F49E /* MagicData.swift in Sources */,
+				2B17B7C72790963900E2F49E /* RemotePredictionData.swift in Sources */,
+				2B6EEED527C1B71500DF269E /* SettingsRouter.swift in Sources */,
 				2B76C3862792560400BEB7CF /* 8Ball.xcdatamodeld in Sources */,
 				2B85D86927908B030042858B /* AppDelegate.swift in Sources */,
-				2B660DC627937FCD00D48A78 /* PredictionsHistoryTableViewController.swift in Sources */,
+				2B660DC627937FCD00D48A78 /* PredictionHistoryListTableViewController.swift in Sources */,
 				2B660DB3279319E800D48A78 /* AnswerManager.swift in Sources */,
 				2B85D86B27908B030042858B /* SceneDelegate.swift in Sources */,
 				2B76C37B2792131100BEB7CF /* PredictionService.swift in Sources */,
+				2B6EEECC27C17D1A00DF269E /* PredictionProvider.swift in Sources */,
+				2B6EEEC527C14CA200DF269E /* Prediction.swift in Sources */,
 				2B660DAD279317BA00D48A78 /* CoreDataManager.swift in Sources */,
+				2B6EEED227C19FF800DF269E /* Router.swift in Sources */,
+				2B0FF55327C6B6CD00A697CC /* EntityListProvider.swift in Sources */,
+				2B6EEEDD27C24D0B00DF269E /* PredictionRouter.swift in Sources */,
 				2B660DBA27932CD600D48A78 /* SettingsTableViewCell.swift in Sources */,
-				2B17B7C52790957B00E2F49E /* Magic.swift in Sources */,
+				2B6EEEC727C14D1100DF269E /* AnswerType.swift in Sources */,
+				2B17B7C52790957B00E2F49E /* RemotePrediction.swift in Sources */,
 				2B660DB72793258700D48A78 /* SettingsTableViewController.swift in Sources */,
-				2B76C38127924B9400BEB7CF /* CustomUIAlertController.swift in Sources */,
-				2B660DBE279340CE00D48A78 /* AnswersTableViewController.swift in Sources */,
-				2B76C37F27921F4800BEB7CF /* 8BallPredictionService.swift in Sources */,
+				2B6EEEBF27C144FF00DF269E /* NetworkService.swift in Sources */,
+				2B76C38127924B9400BEB7CF /* CustomAlertController.swift in Sources */,
+				2B6EEEE227C2B4BB00DF269E /* AnswerEditorView.swift in Sources */,
+				2B660DBE279340CE00D48A78 /* AnswerListTableViewController.swift in Sources */,
+				2B76C37F27921F4800BEB7CF /* RemotePredictionService.swift in Sources */,
+				2B6EEED027C196CA00DF269E /* DBPredictionService.swift in Sources */,
 				2B660DBC27933AC100D48A78 /* Notification extension.swift in Sources */,
 				2B660DC227936D4E00D48A78 /* UIViewController extension.swift in Sources */,
 				2B76C379279212D400BEB7CF /* Errors.swift in Sources */,
+				2B6EEED827C1B74500DF269E /* AnswerListRouter.swift in Sources */,
 				2B660DC42793790800D48A78 /* AnswerEditorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -68,7 +68,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="gray" title="New question"/>
                                 <connections>
-                                    <action selector="askNewQuestion" destination="j8q-6q-EbB" eventType="touchUpInside" id="tnn-go-whS"/>
+                                    <action selector="newQuestionButtonDidTouch" destination="j8q-6q-EbB" eventType="touchUpInside" id="tnn-go-whS"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blitz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mWD-cm-NW1">
@@ -103,7 +103,7 @@
                             <constraint firstItem="WGf-1E-AT0" firstAttribute="trailing" secondItem="162-bS-VCH" secondAttribute="trailing" constant="40" id="xXu-0Y-VsL"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Prediction" image="cube.box.fill" catalog="system" id="h7s-0Y-HgM"/>
+                    <tabBarItem key="tabBarItem" title="Prediction" image="shippingbox.fill" catalog="system" id="h7s-0Y-HgM"/>
                     <connections>
                         <outlet property="answerLabel" destination="162-bS-VCH" id="heK-Va-tiC"/>
                         <outlet property="blitzLabel" destination="mWD-cm-NW1" id="dy1-1j-c6H"/>
@@ -154,8 +154,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cube.box.fill" catalog="system" width="128" height="124"/>
         <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="shippingbox.fill" catalog="system" width="128" height="124"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
