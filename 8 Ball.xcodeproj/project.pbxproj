@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B0FF55327C6B6CD00A697CC /* EntityListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */; };
 		2B17B7C52790957B00E2F49E /* RemotePrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C42790957B00E2F49E /* RemotePrediction.swift */; };
 		2B17B7C72790963900E2F49E /* RemotePredictionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B7C62790963900E2F49E /* RemotePredictionData.swift */; };
 		2B660DAD279317BA00D48A78 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B660DAC279317BA00D48A78 /* CoreDataManager.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		1F8427B3D9689970EB99F959 /* Pods-8 Ball.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-8 Ball.release.xcconfig"; path = "Target Support Files/Pods-8 Ball/Pods-8 Ball.release.xcconfig"; sourceTree = "<group>"; };
+		2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListProvider.swift; sourceTree = "<group>"; };
 		2B17B7C42790957B00E2F49E /* RemotePrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePrediction.swift; sourceTree = "<group>"; };
 		2B17B7C62790963900E2F49E /* RemotePredictionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePredictionData.swift; sourceTree = "<group>"; };
 		2B660DAC279317BA00D48A78 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				2B660DAC279317BA00D48A78 /* CoreDataManager.swift */,
+				2B0FF55227C6B6CD00A697CC /* EntityListProvider.swift */,
 				2B660DB2279319E800D48A78 /* AnswerManager.swift */,
 				2B660DB42793211800D48A78 /* PredictionHistoryManager.swift */,
 			);
@@ -407,6 +410,7 @@
 				2B6EEEC527C14CA200DF269E /* Prediction.swift in Sources */,
 				2B660DAD279317BA00D48A78 /* CoreDataManager.swift in Sources */,
 				2B6EEED227C19FF800DF269E /* Router.swift in Sources */,
+				2B0FF55327C6B6CD00A697CC /* EntityListProvider.swift in Sources */,
 				2B6EEEDD27C24D0B00DF269E /* PredictionRouter.swift in Sources */,
 				2B660DBA27932CD600D48A78 /* SettingsTableViewCell.swift in Sources */,
 				2B6EEEC727C14D1100DF269E /* AnswerType.swift in Sources */,

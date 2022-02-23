@@ -56,10 +56,7 @@ extension AnswerEditorViewController: AnswerEditorViewControllerInput {
         do {
             let answerTitle = answerEditorViewOutput.getAnswer()
             if answerTitle.isEmpty == false {
-                
                 let type: AnswerType = answerEditorViewOutput.getType()
-                
-                let context = CoreDataManager.shared.persistentContainer.viewContext
                 if let answer = answer {
                     try answerManager.editAnswer(answer, answerTitle: answerTitle, type: type)
                 }

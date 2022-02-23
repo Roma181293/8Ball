@@ -113,7 +113,7 @@ class PredictionService {
         isWaitingForPrediction = true
         
         predictionProvider.getPredictionForQuestion(question, completion: { [weak self] (prediction, error) in
-            guard let `self` = self else {return}
+            guard let self = self else {return}
             self.isWaitingForPrediction = false
             
             if let error = error {

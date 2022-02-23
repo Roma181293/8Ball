@@ -8,44 +8,14 @@
 import Foundation
 import CoreData
 
-protocol DataListPresentableDelegate {
-    func presentData()
-}
-
-protocol AnswerListProvider {
-    init(delegate: DataListPresentableDelegate, context: NSManagedObjectContext)
-    func fetchData() throws
-    func deleteAnswerAtIndexPath(_ indexPath: IndexPath) throws
-    func numberOfRowsInSection(_ section: Int) -> Int
-    func numberOfSections() -> Int
-    func answerForIndexPath(_ indexPath: IndexPath) -> Answer
-}
-
-class AnswerManager: AnswerListProvider {
-    
-    private let delegate: DataListPresentableDelegate?
-    private let context: NSManagedObjectContext
-    private let coreDataManager = CoreDataManager.shared
-    
-    private var fetchRequest : NSFetchRequest<Answer> = {
-        let fetchRequest = NSFetchRequest<Answer>(entityName: Answer.entity().name!)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
-        fetchRequest.fetchBatchSize = 20
-        return fetchRequest
-    }()
-    
-    private lazy var fetchedResultsController : NSFetchedResultsController<Answer> = {
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-    }()
-    
-    required init(delegate: DataListPresentableDelegate, context: NSManagedObjectContext) {
-        self.delegate = delegate
-        self.context = context
-    }
+class AnswerManager: EntityListProvider<Answer> {
     
     init(context: NSManagedObjectContext) {
-        self.delegate = nil
-        self.context = context
+        super.init(delegate: nil, context: context)
+    }
+    
+    required init(delegate: DataListPresentableDelegate?, context: NSManagedObjectContext) {
+        super.init(delegate: delegate, context: context)
     }
     
     //MARK: - Single entity methods
@@ -114,11 +84,9 @@ class AnswerManager: AnswerListProvider {
             return nil
         }
     }
-}
-
-//MARK: - AnswerListProvider methods
-extension AnswerManager {
-    func fetchData() throws {
+    
+    //MARK: - EntityListProvider methods
+    override func fetchData() throws {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdByUser", ascending: true)]
         fetchRequest.predicate = nil
     
@@ -126,20 +94,8 @@ extension AnswerManager {
         delegate?.presentData()
     }
     
-    func deleteAnswerAtIndexPath(_ indexPath: IndexPath) throws {
+    override func deleteEntityAtIndexPath(_ indexPath: IndexPath) throws {
         try deleteAnswer(fetchedResultsController.object(at: indexPath))
         try fetchedResultsController.performFetch()
-    }
-    
-    func numberOfRowsInSection(_ section: Int) -> Int {
-        return fetchedResultsController.sections?[section].numberOfObjects  ?? 0
-    }
-    
-    func numberOfSections() -> Int {
-        return 1
-    }
-    
-    func answerForIndexPath(_ indexPath: IndexPath) -> Answer {
-        fetchedResultsController.object(at: indexPath)
     }
 }

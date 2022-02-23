@@ -15,7 +15,7 @@ protocol AnswerListListener {
 
 class AnswerListTableViewController: UITableViewController {
     
-    private var answerListProvider: AnswerListProvider!
+    private var answerListProvider: EntityListProvider<Answer>!
     private var router: AnswerListRouter!
     
     override func viewDidLoad() {
@@ -66,7 +66,7 @@ extension AnswerListTableViewController {
         if cell == nil {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
-        let answer = answerListProvider.answerForIndexPath(indexPath)
+        let answer = answerListProvider.entityForIndexPath(indexPath)
         if answer.createdByUser && (answer.predictionHistory?.allObjects as? [PredictionHistory])?.isEmpty == true {
             cell.textLabel?.textColor = .label
         }
@@ -79,7 +79,7 @@ extension AnswerListTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let answer = answerListProvider.answerForIndexPath(indexPath)
+        let answer = answerListProvider.entityForIndexPath(indexPath)
         if answer.createdByUser && (answer.predictionHistory?.allObjects as? [PredictionHistory])?.isEmpty == true {
             router.route(to: .editAnswer(answer: answer, delegate: self))
         }
@@ -89,7 +89,7 @@ extension AnswerListTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             do {
-                try answerListProvider.deleteAnswerAtIndexPath(indexPath)
+                try answerListProvider.deleteEntityAtIndexPath(indexPath)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
             catch let error {

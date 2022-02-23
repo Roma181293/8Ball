@@ -9,7 +9,7 @@ import UIKit
 
 class PredictionHistoryListTableViewController: UITableViewController {
     
-    private var predictionHistoryListProvider: PredictionHistoryListProvider!
+    private var predictionHistoryListProvider: EntityListProvider<PredictionHistory>!
   
     override func viewDidLoad() {
         super.viewDidLoad()
