@@ -101,8 +101,10 @@ extension AnswerManager {
     }
     
     static func editAnswer(_ answer: Answer, answerTitle: String, type: AnswerType, context: NSManagedObjectContext) throws {
-        guard isAnswerExist(answerTitle, type: type, createdByUser: answer.createdByUser, context: context) else {
-            throw AnswerError.answerAlreadyExists
+        if answer.title != answerTitle {
+            guard isAnswerExist(answerTitle, type: type, createdByUser: answer.createdByUser, context: context) else {
+                throw AnswerError.answerAlreadyExists
+            }
         }
         answer.title = answerTitle
         answer.type = Int16(type.rawValue)
