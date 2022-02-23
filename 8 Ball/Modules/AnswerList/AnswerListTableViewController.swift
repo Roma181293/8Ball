@@ -67,6 +67,12 @@ extension AnswerListTableViewController {
             cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell_ID", for: indexPath)
         }
         let answer = answerListProvider.answerForIndexPath(indexPath)
+        if answer.createdByUser && (answer.predictionHistory?.allObjects as? [PredictionHistory])?.isEmpty == true {
+            cell.textLabel?.textColor = .label
+        }
+        else {
+            cell.textLabel?.textColor = .gray
+        }
         cell.textLabel?.text = (AnswerType(rawValue: Int(answer.type)) ?? .unknown).toEmoji() + "  " + (answer.title ?? "")
         cell.detailTextLabel?.text = answer.createdByUser ? "🧒" : "🤖"
         return cell
@@ -74,7 +80,7 @@ extension AnswerListTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let answer = answerListProvider.answerForIndexPath(indexPath)
-        if answer.createdByUser {
+        if answer.createdByUser && (answer.predictionHistory?.allObjects as? [PredictionHistory])?.isEmpty == true {
             router.route(to: .editAnswer(answer: answer, delegate: self))
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -104,7 +110,7 @@ extension AnswerListTableViewController: AnswerListListener {
     }
 }
 
-extension AnswerListTableViewController: AnswerListPresenter {
+extension AnswerListTableViewController: DataListPresentableDelegate {
     func presentData() {
         tableView.reloadData()
     }

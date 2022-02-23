@@ -16,13 +16,15 @@ class AnswerEditorViewController: UIViewController {
     
     var answer: Answer?
     
-    private let answerListListener : AnswerListListener
+    private let answerListListener: AnswerListListener
+    private let answerManager: AnswerManager
     
     lazy var answerEditorViewInput: AnswerEditorViewInput  = { return view.subviews.first! as! AnswerEditorViewInput }()
     lazy var answerEditorViewOutput: AnswerEditorViewOutput  = { return view.subviews.first! as! AnswerEditorViewOutput }()
     
     init(answerListListener: AnswerListListener) {
         self.answerListListener = answerListListener
+        self.answerManager = AnswerManager(context: CoreDataManager.shared.persistentContainer.viewContext)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,12 +61,11 @@ extension AnswerEditorViewController: AnswerEditorViewControllerInput {
                 
                 let context = CoreDataManager.shared.persistentContainer.viewContext
                 if let answer = answer {
-                    try AnswerManager.editAnswer(answer, answerTitle: answerTitle, type: type, context: context)
+                    try answerManager.editAnswer(answer, answerTitle: answerTitle, type: type)
                 }
                 else {
-                    try  AnswerManager.createAnswer(answerTitle, type: type, createdByUser: true, context: context)
+                    try answerManager.createAnswer(answerTitle, type: type, createdByUser: true)
                 }
-                try CoreDataManager.shared.saveContext(context)
                 answerListListener.fetchData()
                 dismissAction()
             }

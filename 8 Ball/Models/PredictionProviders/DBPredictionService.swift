@@ -17,7 +17,7 @@ class DBPredictionService: PredictionProvider, UserAnswerPredictionProvider {
     }
     
     func getPredictionForQuestion(_ question : String? = nil, completion: @escaping ((Predictible?, Error?) -> Void)) {
-        if let randomAnswer = AnswerManager.getRandomAnswer(context: context) {
+        if let randomAnswer = AnswerManager(context: context).getRandomAnswer() {
             completion(Prediction(question: question, answer: randomAnswer), nil)
         }
         else {

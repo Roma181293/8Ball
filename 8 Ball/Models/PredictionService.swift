@@ -112,7 +112,8 @@ class PredictionService {
         
         isWaitingForPrediction = true
         
-        predictionProvider.getPredictionForQuestion(question, completion: { (prediction, error) in
+        predictionProvider.getPredictionForQuestion(question, completion: { [weak self] (prediction, error) in
+            guard let `self` = self else {return}
             self.isWaitingForPrediction = false
             
             if let error = error {
@@ -124,11 +125,10 @@ class PredictionService {
                 let answerNew = prediction.getAnswer()
                 let typeNew = prediction.getType()
                 if self.mode == .question {
-                    //Add question with answer to the DB
+                    //Add prediction to the DB
                     do {
-                        let context = CoreDataManager.shared.persistentContainer.newBackgroundContext()
-                        
-                        let storedAnswer = AnswerManager.getOrCreateAnswer(answerNew, type: typeNew, createdByUser: self.useCustomAnswers, context: context)
+                        let context = self.coreDataManager.persistentContainer.newBackgroundContext()
+                        let storedAnswer = AnswerManager(context: context).getOrCreateAnswer(answerNew, type: typeNew, createdByUser: self.useCustomAnswers)
                         PredictionHistoryManager.createPrediction(question: self.question!, answer: storedAnswer, context: context)
                         try self.coreDataManager.saveContext(context)
                     }
