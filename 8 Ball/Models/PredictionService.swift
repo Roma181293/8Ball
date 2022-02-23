@@ -129,8 +129,7 @@ class PredictionService {
                     do {
                         let context = self.coreDataManager.persistentContainer.newBackgroundContext()
                         let storedAnswer = AnswerManager(context: context).getOrCreateAnswer(answerNew, type: typeNew, createdByUser: self.useCustomAnswers)
-                        PredictionHistoryManager.createPrediction(question: self.question!, answer: storedAnswer, context: context)
-                        try self.coreDataManager.saveContext(context)
+                        try PredictionHistoryManager(context: context).createPrediction(question: self.question!, answer: storedAnswer)
                     }
                     catch let error {
                         self.delegate.errorHandler(error: error)
